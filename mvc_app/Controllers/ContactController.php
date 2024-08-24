@@ -13,7 +13,7 @@ class ContactController extends Controller
         $_SESSION['csrf_token'] = $csrf_token;
         $contact = new Contact();
         $inquiries = $contact->getAll();
-        $this->view('contact/contact_create', [
+        $this->view('contact/create', [
             'post' => $post,
             'inquiries' => $inquiries,
             'csrf_token' => $csrf_token,
@@ -65,12 +65,19 @@ class ContactController extends Controller
 
     public function confirm()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['csrf_token'] === $_SESSION['csrf_token']) {
-            $_SESSION['post'] = $_POST;
-            $this->view('contact/contact_confirm', [
-                'post' => $_POST,
-                'csrf_token' => $_SESSION['csrf_token']
-            ]);
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if (isset($_SESSION['post'])) {
+                $this->view('contact/confirm', [
+                    'post' => $_SESSION['post'],
+                    'csrf_token' => $_SESSION['csrf_token']
+                ]);
+            } else {
+                header('Location: /contact/index');
+                exit();
+            }
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            header('Location: /contact/complete');
+            exit();
         } else {
             header('Location: /contact/index');
             exit();
@@ -92,7 +99,7 @@ class ContactController extends Controller
             if ($result) {
                 unset($_SESSION['post']);
                 unset($_SESSION['csrf_token']);
-                $this->view('contact/contact_complete');
+                $this->view('contact/complete');
             } else {
                 $_SESSION['errorMessages'] = ['database' => 'お問い合わせの保存に失敗しました。'];
                 header('Location: /contact/index');
@@ -110,7 +117,7 @@ class ContactController extends Controller
         $inquiry = $contact->getById($id);
         $csrf_token = $_SESSION['csrf_token'] ?? bin2hex(random_bytes(32));
         $_SESSION['csrf_token'] = $csrf_token;
-        $this->view('contact/contact_edit', [
+        $this->view('contact/edit', [
             'inquiry' => $inquiry,
             'csrf_token' => $csrf_token
         ]);
@@ -176,7 +183,7 @@ class ContactController extends Controller
             $inquiry = $contact->getById($id);
             $csrf_token = $_SESSION['csrf_token'] ?? bin2hex(random_bytes(32));
             $_SESSION['csrf_token'] = $csrf_token;
-            $this->view('contact/contact_edit', [
+            $this->view('contact/edit', [
                 'inquiry' => $inquiry,
                 'csrf_token' => $csrf_token
             ]);
@@ -187,7 +194,7 @@ class ContactController extends Controller
     {
         $contact = new Contact();
         $inquiry = $contact->getById($id);
-        $this->view('contact/contact_delete', [
+        $this->view('contact/delete', [
             'inquiry' => $inquiry,
             'csrf_token' => $_SESSION['csrf_token'] ?? bin2hex(random_bytes(32))
         ]);
@@ -206,4 +213,3 @@ class ContactController extends Controller
         }
     }
 }
-

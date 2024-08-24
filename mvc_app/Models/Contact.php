@@ -45,10 +45,10 @@ class Contact extends Db
     /**
      * お問い合わせを取得する
      * 
-     * @param string $id お問い合わせID
+     * @param int $id お問い合わせID
      * @return stdClass お問い合わせデータ
      */
-    public function getById(string $id): stdClass
+    public function getById(int $id): stdClass
     {
         try {
             $query = 'SELECT * FROM contacts WHERE id = :id';
@@ -65,7 +65,7 @@ class Contact extends Db
     /**
      * 全てのお問い合わせを取得する
      * 
-     * @return array お問い合わせのデータを配列
+     * @return stdClass[] お問い合わせのデータを配列
      */
     public function getAll(): array
     {
@@ -73,7 +73,7 @@ class Contact extends Db
             $query = 'SELECT * FROM contacts';
             $stmt = $this->dbh->prepare($query);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             echo "取得失敗: " . $e->getMessage() . "\n";
             exit();
@@ -129,7 +129,7 @@ class Contact extends Db
             $stmt->execute();
             $this->dbh->commit();
 
-            header('Location; /contact/index');
+            header('Location: /contact/index');
             exit();
         } catch (PDOException $e) {
             $this->dbh->rollBack();
