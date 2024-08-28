@@ -71,6 +71,15 @@ function route($path, $httpMethod)
                     case ['edit', 'get']:
                         $methodName = 'edit';
                         break;
+                    case ['edit', 'post']:
+                        $methodName = 'edit';
+                        break;
+                    case ['editConfirm', 'get']:
+                        $methodName = 'editConfirm';
+                        break;
+                    case ['editConfirm', 'post']:
+                        $methodName = 'editConfirm';
+                        break;
                     case ['update', 'post']:
                         $methodName = 'update';
                         break;

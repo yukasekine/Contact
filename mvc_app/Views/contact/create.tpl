@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>お問い合わせフォーム</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
 <body>
@@ -17,35 +16,35 @@
             <input type="hidden" name="csrf_token" value="{$csrf_token}">
 
             <div class="form-group">
-                <label for="name">氏名</label>
-                <input type="text" class="form-control" name="name" placeholder="テスト太郎" value="{$post.name|default:''|escape}">
+                <label for="nameField">氏名</label>
+                <input type="text" id= "nameField" class="form-control" name="name" placeholder="テスト太郎" value="{$post.name|default:''|escape}">
                 <p class="error-text">{$errorMessages['name']|default:''}</p>
             </div>
 
             <div class="form-group">
-                <label for="kana">フリガナ</label>
-                <input type="text" class="form-control" name="kana" placeholder="テストタロウ"
+                <label for="kanaField">フリガナ</label>
+                <input type="text"  id = "kanaField"class="form-control" name="kana" placeholder="テストタロウ"
                     value="{$post.kana|default:''|escape}">
                 <p class="error-text">{$errorMessages['kana']|default:''}</p>
             </div>
  
             <div class="form-group">
-                <label for="tel">電話番号</label>
-                <input type="text" class="form-control" name="tel" placeholder="1234567890"
+                <label for="telField">電話番号</label>
+                <input type="text" id = "telField" class="form-control" name="tel" placeholder="1234567890"
                     value="{$post.tel|default:''|escape}">
                 <p class="error-text">{$errorMessages['tel']|default:''}</p>
             </div>
 
             <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" class="form-control" name="email" placeholder="test@example.com"
+                <label for="emailField">メールアドレス</label>
+                <input type="email"  id = "emailField"class="form-control" name="email" placeholder="test@example.com"
                     value="{$post.email|default:''|escape}">
                 <p class="error-text">{$errorMessages['email']|default:''}</p>
             </div>
 
             <div class="form-group">
-                <label for="body">お問い合わせ内容</label>
-                <textarea class="form-control" name="body" rows="5"
+                <label for="bodyField">お問い合わせ内容</label>
+                <textarea class="form-control" id = "bodyField" name="body" rows="5"
                     placeholder="お問い合わせ内容を入力してください">{$post.body|default:''|escape}</textarea>
                 <p class="error-text">{$errorMessages['body']|default:''}</p>
             </div>
@@ -55,8 +54,8 @@
     </div>
 
     <div class="container">
-        <h2>お問い合わせ一覧<h2>
-                <table class="infomation">
+        <h2>お問い合わせ一覧</h2>
+                <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>氏名</th>

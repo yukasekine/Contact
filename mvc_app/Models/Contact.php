@@ -83,7 +83,7 @@ class Contact extends Db
     /**
      * お問い合わせを更新する
      * 
-     * @param string $id お問い合わせのID
+     * @param int $id お問い合わせのID
      * @param string $name 氏名
      * @param string $kana フリガナ
      * @param string $tel 電話番号
@@ -91,7 +91,7 @@ class Contact extends Db
      * @param string $body お問い合わせ内容
      * @return bool 更新成功時にtrue、失敗の場合はfalseを返却
      */
-    public function update(string $id, string $name, string $kana, string $tel, string $email, string $body): bool
+    public function update(int $id, string $name, string $kana, string $tel, string $email, string $body): bool
     {
         try {
             $this->dbh->beginTransaction();

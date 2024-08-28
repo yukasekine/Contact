@@ -17,28 +17,28 @@
             <input type="hidden" name="csrf_token" value="{$csrf_token}">
 
             <div class="form-group">
-                <label for="name">氏名</label>
-                <input type="text" class="form-control" name="name" value="{$post.name|default:''|escape}" readonly>
+                <label for="nameField">氏名</label>
+                <input type="text" id ="nameField" class="form-control" name="name" value="{$post.name|default:''|escape}" readonly>
             </div>
 
             <div class="form-group">
-                <label for="kana">フリガナ</label>
-                <input type="text" class="form-control" name="kana" value="{$post.kana|default:''|escape}" readonly>
+                <label for="kanaField">フリガナ</label>
+                <input type="text" id = "kanaField" class="form-control" name="kana" value="{$post.kana|default:''|escape}" readonly>
             </div>
 
             <div class="form-group">
-                <label for="tel">電話番号</label>
-                <input type="text" class="form-control" name="tel" value="{$post.tel|default:''|escape}" readonly>
+                <label for="telField">電話番号</label>
+                <input type="text" class="form-control" id = "telField" name="tel" value="{$post.tel|default:''|escape}" readonly>
             </div>
 
             <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="text" class="form-control" name="email" value="{$post.email|default:''|escape}" readonly>
+                <label for="emailField">メールアドレス</label>
+                <input type="text" class="form-control" id ="emailField" name="email" value="{$post.email|default:''|escape}" readonly>
             </div>
 
             <div class="form-group">
-                <label for="body">お問い合わせ内容</label>
-                <textarea class="form-control" name="body" rows="5" readonly>{$post.body|default:''|escape}</textarea>
+                <label for="bodyField">お問い合わせ内容</label>
+                <textarea class="form-control" id = "bodyField"name="body" rows="5" readonly>{$post.body|default:''|escape}</textarea>
             </div>
 
             <p>上記の内容でよろしいでしょうか？</p>
