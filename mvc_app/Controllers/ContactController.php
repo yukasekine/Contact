@@ -42,8 +42,10 @@ class ContactController extends Controller
                 $errorMessages['kana'] = 'フリガナは10文字以内で入力してください。';
             }
 
-            if (!empty($_POST['tel']) && !preg_match('/^[0-9]*$/', $_POST['tel'])) {
-                $errorMessages['tel'] = '電話番号は数字入力です。';
+            if (!empty($_POST['tel'])) {
+                if (!preg_match('/^[0-9]{10,11}$/', $_POST['tel'])) {
+                    $errorMessages['tel'] = '電話番号は10〜11桁の数字で入力してください。';
+                }
             }
 
             if (empty($_POST['email'])) {
@@ -119,9 +121,21 @@ class ContactController extends Controller
 
     public function edit($id)
     {
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], '/contact/index') === false) {
+                header('Location: /contact/error');
+                exit();
+            }
+
             $contact = new Contact();
             $inquiry = $contact->getById($id);
+
+            if (!$inquiry) {
+                header('Location: /contact/error');
+                exit();
+            }
+
             $post = $_SESSION['post'] ?? [];
             unset($_SESSION['post']);
             $errorMessages = $_SESSION['errorMessages'] ?? [];
@@ -154,8 +168,10 @@ class ContactController extends Controller
                 $errorMessages['kana'] = 'フリガナは10文字以内で入力してください。';
             }
 
-            if (!empty($_POST['tel']) && !preg_match('/^[0-9]*$/', $_POST['tel'])) {
-                $errorMessages['tel'] = '電話番号は数字入力です。';
+            if (!empty($_POST['tel'])) {
+                if (!preg_match('/^[0-9]{10,11}$/', $_POST['tel'])) {
+                    $errorMessages['tel'] = '電話番号は10〜11桁の数字で入力してください。';
+                }
             }
 
             if (empty($_POST['email'])) {
@@ -171,13 +187,20 @@ class ContactController extends Controller
             if (!empty($errorMessages)) {
                 $_SESSION['errorMessages'] = $errorMessages;
                 $_SESSION['post'] = $_POST;
-                header('Location: /contact/edit/' . $id);
-                exit();
+                $this->view('contact/edit', [
+                    'inquiry' => (new Contact())->getById($id),
+                    'csrf_token' => $_SESSION['csrf_token'],
+                    'post' => $_SESSION['post'],
+                    'errorMessages' => $errorMessages
+                ]);
             } else {
                 $_SESSION['post'] = $_POST;
                 header('Location: /contact/editConfirm/' . $id);
                 exit();
             }
+        } else {
+            header('Location: /contact/error');
+            exit();
         }
     }
 
@@ -187,7 +210,8 @@ class ContactController extends Controller
             if (isset($_SESSION['post'])) {
                 $this->view('contact/editConfirm', [
                     'post' => $_SESSION['post'],
-                    'csrf_token' => $_SESSION['csrf_token']
+                    'csrf_token' => $_SESSION['csrf_token'],
+                    'id' => $id
                 ]);
             } else {
                 header('Location: /contact/edit/' . $id);
@@ -202,12 +226,13 @@ class ContactController extends Controller
         }
     }
 
-    public function update($id)
+    public function update(int $id)
     {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['csrf_token'] === $_SESSION['csrf_token']) {
             $contact = new Contact();
             $result = $contact->update(
-                $id,
+                (int)$id,
                 $_POST['name'],
                 $_POST['kana'],
                 $_POST['tel'],
@@ -218,6 +243,7 @@ class ContactController extends Controller
             if ($result) {
                 unset($_SESSION['post']);
                 unset($_SESSION['csrf_token']);
+                unset($_SESSION['errorMessages']);
                 header('Location: /contact/index');
                 exit();
             } else {
@@ -233,8 +259,15 @@ class ContactController extends Controller
 
     public function deleteConfirm($id)
     {
+        if (!isset($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'], '/contact/index') === false) {
+            header('Location: /contact/error');
+            exit();
+        }
+
         $contact = new Contact();
         $inquiry = $contact->getById($id);
+        $csrf_token = $_SESSION['csrf_token'] ?? bin2hex(random_bytes(32));
+        $_SESSION['csrf_token'] = $csrf_token;
         $this->view('contact/delete', [
             'inquiry' => $inquiry,
             'csrf_token' => $_SESSION['csrf_token'] ?? bin2hex(random_bytes(32))

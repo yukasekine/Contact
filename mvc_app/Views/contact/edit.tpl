@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-group">
-                <label for="telField">電話</label>
+                <label for="telField">電話番号</label>
                 <input type="text" class="form-control" id="telField" name="tel"
                     value="{if isset($post.tel)}{$post.tel|escape}{else}{$inquiry->tel|escape}{{/if}}">
                 <p class="error-text">{$errorMessages.tel|default:''}</p>

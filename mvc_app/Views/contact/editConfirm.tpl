@@ -13,9 +13,7 @@
 <body>
     <div class="container">
         <h1>お問い合わせ編集内容の確認</h1>
-        <form
-            action="/contact/update/<?php echo isset($_smarty_tpl->tpl_vars['post']->value['id']) ? $_smarty_tpl->tpl_vars['post']->value['id'] : ''; ?>"
-            method="post">
+        <form action="/contact/update/{$id|default:''|escape}" method="post">
             <input type="hidden" name="csrf_token" value="{$csrf_token}">
 
             <div class="form-group">
@@ -51,7 +49,7 @@
             <p>上記の内容で更新してよろしいでしょうか？</p>
             <div class="form-group">
                 <div class="form-group">
-                    <a href="/contact/index" class="btn btn-submit">OK</a>
+                    <button type="submit" class="btn btn-submit">更新</button>
                     <button type="button" class="btn btn-cancel" onclick="history.back()">キャンセル</button>
                 </div>
             </div>
